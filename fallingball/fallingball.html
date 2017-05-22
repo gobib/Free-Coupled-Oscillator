@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Gerak Benda Terkopel dalam Fluida</title>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<script src="ball.js"></script>
+</head>
+<body>
+	<audio autoplay="autoplay" controls="controls">
+		<source src="BeautyofHTML.mp3"  type="audio/mpeg"/>     
+	</audio>
+	<h1>Gerak Benda Terkopel dalam Fluida</h1>
+	<table>
+	<tr>
+		<!--kanvas-->
+		<td rowspan="2">
+			<div><canvas id="myCanvas" width="320" height="640"></canvas></div>
+		</td>
+
+		<td rowspan="2">
+			<div><canvas id="grafikxy" width="320" height="640"></canvas></div>
+		</td>
+		<td>
+			<div><canvas id="grafik1" width="480" height="320"></canvas></div>
+			<!--<div><textarea id="hasil"></textarea></div>-->
+		</td>
+		
+		<!--parameter-->
+		<td rowspan="2">
+		<div>
+		<table>
+				<td>
+					<div><textarea id="tb" readonly></textarea></div>
+				</td>
+					
+				<script>
+					//x y r m c
+					tb.value = "x1\ty1\tr1\tm1\tc1\n";//benda1
+					tb.value += "x2\ty2\tr2\tm2\tc2\n"; //benda2
+					//g
+					tb.value += "g\n"; //konstanta gravitasi
+					//L l k
+					tb.value += "L\tl\tk\n"; //kondisi awal
+					//delta tcur ti tf Tpriode
+					tb.value += "deltat\ttcur\tti\ttf\tperiode"; //Parameter simulasi
+				</script>
+			</table>
+			<table>
+				<td>
+					<div><textarea id="ta"></textarea></div>
+				</td>
+					
+				<script>
+					//x y r m c
+					ta.value = "100\t100\t10\t1\t1\n";//benda1
+					ta.value += "200\t100\t10\t1\t1\n"; //benda2
+					//g
+					ta.value += "10\n"; //konstanta gravitasi
+					//L l k
+					ta.value += "50\t0\t10\n"; //kondisi awal
+					//delta tcur ti tf Tpriode
+					ta.value += "0.01\t0\t0\t200\t1"; //Parameter simulasi
+				</script>
+			</table>
+			<table>
+				<td>
+					<div><textarea id="hasil1"></textarea></div>
+				</td>
+				<td>
+					<div><textarea id="hasil2"></textarea></div>
+				</td>
+			</table>
+		
+		<!--membuat tombol untuk mempersiapkan simulasi-->
+		t<sub>cur</sub> <input id="tcur" value="0" readonly />s <br><br>
+		<button id="siap" onclick="siapFunction()">
+			Siap
+		</button>
+		<!--membuat tombol untuk memulai simulasi-->
+		<button id="mulai" onclick="fire()">
+			Mulai
+		</button>
+		<!--membuat tombol untuk reset simulasi-->
+		<button id="selesai" onclick="resetFunction()">
+			Reset
+		</button>
+		</div>
+	</td>
+	</tr>
+	<tr>
+		<td><div><canvas id="grafik2" width="480" height="320"></canvas></div></td>
+	</tr>
+	</table>
+	
+	<script>
+		var grafik1 = document.getElementById("grafik1");
+		var grafik2 = document.getElementById("grafik2");
+		var myCanvas = document.getElementById("myCanvas");
+		var drawGraph = grafik1.getContext("2d");
+		var drawGraph2 = grafik2.getContext("2d");
+		var drawBall = myCanvas.getContext("2d");
+		var xmax = grafik1.width - (grafik1.width/10);
+		var ymax = grafik1.height - (grafik1.height/10);
+		var dx = xmax/10;
+		var dy = ymax/10;
+
+		/*membuat sumbu*/
+		makeAxis(drawGraph,dx,0,dx,ymax,0.5);
+		makeAxis(drawGraph,dx,ymax,grafik1.width,ymax,0.5);
+		/*membuat grid vertikal*/
+		makeGrid(drawGraph,2*dx,0,2*dx,ymax,0.5);
+		makeGrid(drawGraph,3*dx,0,3*dx,ymax,0.5);
+		makeGrid(drawGraph,4*dx,0,4*dx,ymax,0.5);
+		makeGrid(drawGraph,5*dx,0,5*dx,ymax,0.5);
+		makeGrid(drawGraph,6*dx,0,6*dx,ymax,0.5);
+		makeGrid(drawGraph,7*dx,0,7*dx,ymax,0.5);
+		makeGrid(drawGraph,8*dx,0,8*dx,ymax,0.5);
+		makeGrid(drawGraph,9*dx,0,9*dx,ymax,0.5);
+		makeGrid(drawGraph,10*dx,0,10*dx,ymax,0.5);
+		makeGrid(drawGraph,11*dx,0,11*dx,ymax,0.5);
+		
+		/*membuat teks grid vertikal*/
+		/*gridText(drawGraph,0,1*dx,ymax+10);
+		gridText(drawGraph,10,2*dx,ymax+10);
+		gridText(drawGraph,20,3*dx,ymax+10);
+		gridText(drawGraph,30,4*dx,ymax+10);
+		gridText(drawGraph,40,5*dx,ymax+10);
+		gridText(drawGraph,50,6*dx,ymax+10);
+		gridText(drawGraph,60,7*dx,ymax+10);
+		gridText(drawGraph,70,8*dx,ymax+10);
+		gridText(drawGraph,80,9*dx,ymax+10);
+		gridText(drawGraph,90,10*dx,ymax+10);
+		gridText(drawGraph,100,(11*dx)-5,ymax+10);*/
+		gridText(drawGraph,"Grafik Posisi Horizontal(x) Benda Terhadap Waktu(t)",grafik1.width/2,grafik1.height-10);
+
+		/*membuat grid vertikal*/
+		makeGrid(drawGraph,dx,ymax-dy,dx+xmax,ymax-dy,0.5);
+		makeGrid(drawGraph,dx,ymax-2*dy,dx+xmax,ymax-2*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-3*dy,dx+xmax,ymax-3*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-4*dy,dx+xmax,ymax-4*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-5*dy,dx+xmax,ymax-5*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-6*dy,dx+xmax,ymax-6*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-7*dy,dx+xmax,ymax-7*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-8*dy,dx+xmax,ymax-8*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-9*dy,dx+xmax,ymax-9*dy,0.5);
+		makeGrid(drawGraph,dx,ymax-10*dy,dx+xmax,ymax-10*dy,0.5);
+
+		/*membuat teks grid horizontal*/
+		gridText(drawGraph,1*grafik1.height/10,dx-15,ymax-dy+5);
+		gridText(drawGraph,2*grafik1.height/10,dx-15,ymax-2*dy+5);
+		gridText(drawGraph,3*grafik1.height/10,dx-15,ymax-3*dy+5);
+		gridText(drawGraph,4*grafik1.height/10,dx-15,ymax-4*dy+5);
+		gridText(drawGraph,5*grafik1.height/10,dx-15,ymax-5*dy+5);
+		gridText(drawGraph,6*grafik1.height/10,dx-15,ymax-6*dy+5);
+		gridText(drawGraph,7*grafik1.height/10,dx-15,ymax-7*dy+5);
+		gridText(drawGraph,8*grafik1.height/10,dx-15,ymax-8*dy+5);
+		gridText(drawGraph,9*grafik1.height/10,dx-15,ymax-9*dy+5);
+		gridText(drawGraph,10*grafik1.height/10,dx-15,10);
+		
+
+		/*membuat sumbu*/
+		makeAxis(drawGraph2,dx,0,dx,ymax,0.5);
+		makeAxis(drawGraph2,dx,ymax,grafik1.width,ymax,0.5);
+		/*membuat grid vertikal*/
+		makeGrid(drawGraph2,2*dx,0,2*dx,ymax,0.5);
+		makeGrid(drawGraph2,3*dx,0,3*dx,ymax,0.5);
+		makeGrid(drawGraph2,4*dx,0,4*dx,ymax,0.5);
+		makeGrid(drawGraph2,5*dx,0,5*dx,ymax,0.5);
+		makeGrid(drawGraph2,6*dx,0,6*dx,ymax,0.5);
+		makeGrid(drawGraph2,7*dx,0,7*dx,ymax,0.5);
+		makeGrid(drawGraph2,8*dx,0,8*dx,ymax,0.5);
+		makeGrid(drawGraph2,9*dx,0,9*dx,ymax,0.5);
+		makeGrid(drawGraph2,10*dx,0,10*dx,ymax,0.5);
+		makeGrid(drawGraph2,11*dx,0,11*dx,ymax,0.5);
+		
+		/*membuat teks grid vertikal*/
+		/*gridText(drawGraph2,0,1*dx,ymax+10);
+		gridText(drawGraph2,10,2*dx,ymax+10);
+		gridText(drawGraph2,20,3*dx,ymax+10);
+		gridText(drawGraph2,30,4*dx,ymax+10);
+		gridText(drawGraph2,40,5*dx,ymax+10);
+		gridText(drawGraph2,50,6*dx,ymax+10);
+		gridText(drawGraph2,60,7*dx,ymax+10);
+		gridText(drawGraph2,70,8*dx,ymax+10);
+		gridText(drawGraph2,80,9*dx,ymax+10);
+		gridText(drawGraph2,90,10*dx,ymax+10);
+		gridText(drawGraph2,100,(11*dx)-5,ymax+10);*/
+
+		/*membuat grid vertikal*/
+		makeGrid(drawGraph2,dx,ymax-dy,dx+xmax,ymax-dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-2*dy,dx+xmax,ymax-2*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-3*dy,dx+xmax,ymax-3*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-4*dy,dx+xmax,ymax-4*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-5*dy,dx+xmax,ymax-5*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-6*dy,dx+xmax,ymax-6*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-7*dy,dx+xmax,ymax-7*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-8*dy,dx+xmax,ymax-8*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-9*dy,dx+xmax,ymax-9*dy,0.5);
+		makeGrid(drawGraph2,dx,ymax-10*dy,dx+xmax,ymax-10*dy,0.5);
+
+		/*membuat teks grid horizontal*/
+		gridText(drawGraph2,1*myCanvas.height/10,dx-15,ymax-dy+5);
+		gridText(drawGraph2,2*myCanvas.height/10,dx-15,ymax-2*dy+5);
+		gridText(drawGraph2,3*myCanvas.height/10,dx-15,ymax-3*dy+5);
+		gridText(drawGraph2,4*myCanvas.height/10,dx-15,ymax-4*dy+5);
+		gridText(drawGraph2,5*myCanvas.height/10,dx-15,ymax-5*dy+5);
+		gridText(drawGraph2,6*myCanvas.height/10,dx-15,ymax-6*dy+5);
+		gridText(drawGraph2,7*myCanvas.height/10,dx-15,ymax-7*dy+5);
+		gridText(drawGraph2,8*myCanvas.height/10,dx-15,ymax-8*dy+5);
+		gridText(drawGraph2,9*myCanvas.height/10,dx-15,ymax-9*dy+5);
+		gridText(drawGraph2,10*myCanvas.height/10,dx-15,10);
+		gridText(drawGraph2,"Grafik Posisi Vertikal(y) Benda Terhadap Waktu(t)",grafik2.width/2,grafik2.height-10);
+		
+	</script>
+<!--	<div>
+		
+	</div>-->
+</body>
+</html>
