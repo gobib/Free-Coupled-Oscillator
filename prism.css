@@ -5,10 +5,6 @@
  * @author ocodia
  */
 
-pre.code-toolbar {
-        position: relative;
-        font-size: 20px; // size you want
-}
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #f8f8f2;
