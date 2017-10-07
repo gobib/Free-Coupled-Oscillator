@@ -5,6 +5,10 @@
  * @author ocodia
  */
 
+re.code-toolbar {
+        position: relative;
+        font-size: 14px; // size you want
+}
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #f8f8f2;
@@ -12,7 +16,6 @@ pre[class*="language-"] {
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
-	font-size: 80%;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
