@@ -7,7 +7,7 @@
 
 re.code-toolbar {
         position: relative;
-        font-size: 2em; // size you want
+        font-size: 80%; // size you want
 }
 code[class*="language-"],
 pre[class*="language-"] {
