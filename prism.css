@@ -5,7 +5,7 @@
  * @author ocodia
  */
 
-re.code-toolbar {
+pre.code-toolbar {
         position: relative;
         font-size: 20px; // size you want
 }
