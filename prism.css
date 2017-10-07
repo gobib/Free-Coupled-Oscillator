@@ -12,7 +12,7 @@ pre[class*="language-"] {
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
-	font-size: 10px;
+	font-size: 80%;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
