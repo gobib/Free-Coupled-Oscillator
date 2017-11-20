@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Simulasi Kekekalan Energi Mekanik</title>
+	<script src="dynamic.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+	<table>
+		<tr>
+			<td rowspan="3">
+				<div>
+					<canvas id="myCanvas" width="300" height="500" style="border:1px solid #000000;"> </canvas>
+				</div>
+			</td>
+			<td>
+				<div>
+					<canvas id="potentialGraph" width="400" height="250" style="border:1px solid #000000;"> </canvas>
+				</div>
+			</td>
+			<td>
+				<div>
+					<canvas id="kineticGraph" width="400" height="250" style="border:1px solid #000000;"> </canvas>
+				</div>
+			</td>
+			<td rowspan="2">
+				<div>
+					<table>
+						<!--variable benda 1-->
+						<tr> 
+							<td colspan="5"><b>Variabel Benda 1</b></td>
+						</tr>
+						<tr> 
+                            <td>y<sub>1</sub></td> <td><input id="y1" value="300" /> m</td>
+                            <td>R<sub>1</sub></td> <td><input id="R1" value="10" /> cm</td>
+						</tr>
+						<tr> 
+                            <td>m<sub>1</sub></td> <td><input id="m1" value="2" /> kg</td>							
+							<td>c<sub>1</sub></td> <td><input id="c1" value="0"/></td>
+						</tr>
+						
+						<!--Variable benda 2-->
+						<tr class="spaceUpper"> 
+							<td colspan="5"><b>Variabel Benda 2</b></td>
+						</tr>
+						<tr> 
+							<td>y<sub>2</sub></td> <td><input id="y2" value="280" /> m </td>
+                            <td>R<sub>2</sub></td> <td><input id="R2" value="10" /> cm </td>
+						</tr>
+						<tr> 
+							<td>m<sub>2</sub></td> <td><input id="m2" value="2" /> kg </td>
+							<td>c<sub>2</sub></td> <td><input id="c2" value="0" /> </td>
+						</tr>
+						
+						<!--Konstanta-->
+						<tr class="spaceUpper">
+							<td colspan="5"><b>Konstanta</b></td>
+						</tr>
+						<tr>
+							<td>k</td> <td><input id="k" value="60"/> N/m </td>
+                        </tr>
+                        <tr>
+                            <td>&Delta;t</td> <td><input id="dt" value="0.01" /> s</td>
+                        </tr>
+		
+						<!--Parameter Simulasi
+						<tr class="spaceUpper">
+							<td colspan="5"><b>Parameter Simulasi</b></td>
+						</tr>
+						<tr>
+							<td>&Delta;t</td> <td><input id="dt" value="0.01" /> s</td>
+							
+							<td>t<sub>cur</sub></td> <td><input id="tcur" value="0" readonly /> s</td>
+						</tr>
+						<tr>
+							<td>t<sub>i</sub></td> <td><input id="ti" value="0" /> s</td>
+							<td>t<sub>f</sub></td> <td><input id="tf" value="100" /> s</td>
+						</tr>
+						<tr>
+							<td>T</td> <td><input id="period" value="1" /> s </td>
+						</tr>
+						<tr>
+							<td>vx<sub>1</sub></td> <td><input id="vx1val" value="0"/> </td>
+							<td>vy<sub>1</sub></td> <td><input id="vy1val" value="0"/> </td>
+						</tr>
+						<tr>
+							<td>vx<sub>2</sub></td> <td><input id="vx2val" value="0"/> </td>
+							<td>vy<sub>2</sub></td> <td><input id="vy2val" value="0"/> </td>
+						</tr>-->
+					</table>
+				
+				<!--membuat tombol untuk mempersiapkan simulasi-->
+				<button id="siap" onclick="ready()">
+					Ready
+				</button>
+				<!--membuat tombol untuk memulai simulasi-->
+				<button id="start" onclick="start()">
+					Start
+				</button>
+				<!--membuat tombol untuk reset simulasi-->
+				<button id="selesai" onclick="reset()">
+					Reset
+				</button>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div>
+					<canvas id="springGraph" width="400" height="250" style="border:1px solid #000000;"> </canvas>
+				</div>
+			</td>
+			<td>
+				<div>
+					<canvas id="totalGraph" width="400" height="250" style="border:1px solid #000000;"> </canvas>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<script>
+		var titlePotential = potentialGraph.getContext("2d");
+		var titleKinetic = kineticGraph.getContext("2d");
+		var titleSpring = springGraph.getContext("2d");
+		var titleTotal = totalGraph.getContext("2d");
+		putText(titlePotential,"Energi Potensial",10,20);
+		putText(titleKinetic,"Energi Kinetik",10,20);
+		putText(titleSpring,"Energi Pegas",10,20);
+		putText(titleTotal,"Energi Total",10,20);
+	</script>
+	<h1>Simulasi Kekekalan Energi Mekanik</h1>
+	<p>
+		Cara menjalankan simulasi : <br>
+		Pertama klik tombol Ready, maka bola akan ditampilkan pada halaman simulasi. <br>
+		Setelah bola ditampilkan, maka klik tombol Start untuk menjalankan simulasi. <br>
+		Untuk me-reset simulasi klik tombol Reset.
+	</p>
+</body>
+</html>
